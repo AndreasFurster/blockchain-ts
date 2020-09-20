@@ -1,4 +1,4 @@
-# Basic Typescript Boilerplate
+# Blockchain demo Typescript 
 
 **Start development**  
 `npm run start`
