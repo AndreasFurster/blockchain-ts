@@ -6,12 +6,12 @@ import ITransaction from "./interfaces/Transaction";
 
 export default class BlockChain implements IBlockChain {
   public blocks: IBlock[];
-  public difficulty: number;
 
-  constructor(genesisBlock: IBlock) {
-    this.difficulty = 5;
+  constructor(
+    genesisBlock: IBlock,
+    public difficulty: number = 4) {
+    
     this.blocks = [];
-    genesisBlock.previousHash = "0000000000"
     genesisBlock.hash = this.generateHash(genesisBlock)
     this.addBlock(genesisBlock);
   }
@@ -44,14 +44,10 @@ export default class BlockChain implements IBlockChain {
     let requiredHashStart = Array(this.difficulty + 1).join("0");
 
     let hash: string;
-    console.time("Mining Block");
-
     do {
       hash = Crypto.createHash('sha256').update(block.key).digest('hex')
       block.nonce += 1;
     } while(!hash.startsWith(requiredHashStart))
-
-    console.timeEnd("Mining Block");
 
     return hash;
   }
