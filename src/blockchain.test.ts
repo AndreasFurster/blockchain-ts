@@ -1,9 +1,9 @@
 import Block from './block';
 import BlockChain from './BlockChain';
 import Transaction from './transaction';
-import IBlock from './interfaces/block';
+import IBlock from './interfaces/IBlock';
 import IBlockChain from './interfaces/blockchain';
-import ITransaction from './interfaces/Transaction';
+import ITransaction from './interfaces/ITransaction';
 
 describe('blockchain', () => {
   const difficulty = 2;
