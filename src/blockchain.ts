@@ -10,7 +10,7 @@ export default class BlockChain implements IBlockChain {
 
   constructor(
     genesisBlock: IBlock,
-    public difficulty: number = 4) {
+    public difficulty: number = 1) {
 
     this.blocks = [];
     genesisBlock.hash = this.generateHash(genesisBlock)
