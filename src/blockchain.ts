@@ -41,12 +41,19 @@ export default class BlockChain implements IBlockChain {
   }
 
   public generateHash(block: IBlock) {
+    // The hash is required to start with a couple of 0's. This makes the hash hard to generate. 
     let requiredHashStart = Array(this.difficulty + 1).join("0");
 
     let hash: string;
     do {
-      hash = Crypto.createHash('sha256').update(block.key).digest('hex')
+      // Increase nonce. The nonce is part of the block's key. This way the input of the hash function is unique each time a hash is created. 
+      // The nonce is also stored in the block so one can validate the hash. 
       block.nonce += 1;
+
+      // Generate new hash
+      hash = Crypto.createHash('sha256').update(block.key).digest('hex')
+
+      // Validate valid hash
     } while(!hash.startsWith(requiredHashStart))
 
     return hash;
