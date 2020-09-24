@@ -3,6 +3,9 @@
 **Start development**  
 `npm run start`
 
+**Run tests**  
+`npm run test`
+
 **Create build**  
 `npm run build`
 
