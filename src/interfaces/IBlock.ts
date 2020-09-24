@@ -1,4 +1,4 @@
-import ITransaction from "./Transaction";
+import ITransaction from "./ITransaction";
 
 export default interface IBlock {
   index: number;
@@ -7,4 +7,5 @@ export default interface IBlock {
   nonce: number;
   transactions: ITransaction[];
   key: string;
+  signature: string;
 }
