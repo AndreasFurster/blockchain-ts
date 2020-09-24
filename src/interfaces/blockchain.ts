@@ -1,5 +1,5 @@
-import IBlock from "./block";
-import ITransaction from "./Transaction";
+import IBlock from "./IBlock";
+import ITransaction from "./ITransaction";
 
 export default interface IBlockChain {
   blocks: IBlock[];
@@ -9,4 +9,5 @@ export default interface IBlockChain {
   getPreviousBlock() : IBlock;
   getNextBlock(transaction: ITransaction[]) : IBlock;
   generateHash(block: IBlock) : string;
+  verifySignature(hash: string, publicKey: string, signature: string) : boolean;
 }

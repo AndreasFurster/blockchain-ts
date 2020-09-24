@@ -1,6 +1,8 @@
-import IBlock from "./interfaces/block";
-import ITransaction from "./interfaces/Transaction";
-
+import IBlock from "./interfaces/IBlock";
+import ITransaction from "./interfaces/ITransaction";
+import {Config} from "./config";
+import crypto from "crypto";
+let config: Config = require('../config.json');
 
 export default class Block implements IBlock {
   constructor(
@@ -8,9 +10,10 @@ export default class Block implements IBlock {
     public hash: string = '',
     public previousHash: string = '',
     public nonce: number = 0,
-    public transactions: ITransaction[] = []
+    public transactions: ITransaction[] = [],
+    public signature: string = ''
   ) {
-    
+
   }
 
   get key() : string {
@@ -19,5 +22,16 @@ export default class Block implements IBlock {
 
   public addTransaction(transaction: ITransaction) : void {
     this.transactions = [...this.transactions, transaction]
+  }
+
+  private createSignature(hash: string) : void {
+    const signer = crypto.createSign('RSA-SHA512');
+    signer.update(hash);
+    this.signature  = signer.sign(config.privateKey, 'hex');
+  }
+
+  public setHash(hash: string) {
+    this.hash = hash;
+    this.createSignature(hash);
   }
 }
