@@ -26,7 +26,7 @@ export default class Block implements IBlock {
 
   private createSignature(hash: string) : void {
     const signer = crypto.createSign('RSA-SHA512');
-    signer.update('hello');
+    signer.update(hash);
     this.signature  = signer.sign(config.privateKey, 'hex');
   }
 

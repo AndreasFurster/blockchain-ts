@@ -61,7 +61,7 @@ export default class BlockChain implements IBlockChain {
 
   public verifySignature(hash: string, publicKey: string, signature: string) : boolean {
     const verifier = crypto.createVerify('RSA-SHA512');
-    verifier.update('hello');
+    verifier.update(hash);
     const publicKeyBuf = Buffer.from(publicKey, 'utf-8');
     const signatureBuf = Buffer.from(signature, 'hex');
     return verifier.verify(publicKeyBuf, signatureBuf)
