@@ -1,8 +1,7 @@
 import IBlock from "./interfaces/IBlock";
 import ITransaction from "./interfaces/ITransaction";
-import Crypto, {Signer} from "crypto";
-import {TextEncoder} from "util";
 import {Config} from "./config";
+import crypto from "crypto";
 let config: Config = require('../config.json');
 
 export default class Block implements IBlock {
@@ -25,15 +24,14 @@ export default class Block implements IBlock {
     this.transactions = [...this.transactions, transaction]
   }
 
-  private createSignature() : void {
-    let signature = Crypto.sign(null, Buffer.from(this.hash), config.privateKey);
-    this.signature = Buffer.from(signature).toString('base64');
-
-    console.log(this.signature);
+  private createSignature(hash: string) : void {
+    const signer = crypto.createSign('RSA-SHA512');
+    signer.update('hello');
+    this.signature  = signer.sign(config.privateKey, 'hex');
   }
 
   public setHash(hash: string) {
-    this.createSignature();
-    this.hash = hash
+    this.hash = hash;
+    this.createSignature(hash);
   }
 }

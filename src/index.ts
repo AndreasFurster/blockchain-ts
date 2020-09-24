@@ -4,30 +4,6 @@ import Transaction from "./transaction";
 import {Config} from "./config";
 let config: Config = require('../config.json');
 
-
-
-import crypto from "crypto"
-
-let payload = "Test!"
-
-const signer = crypto.createSign('RSA-SHA512');
-signer.update(payload);
-const signature = signer.sign(config.privateKey, 'hex');
-
-console.log(signature);
-
-const verifier = crypto.createVerify('RSA-SHA512');
-verifier.update(payload);
-const publicKeyBuf = Buffer.from(config.publicKey, 'utf-8');
-const signatureBuf = Buffer.from(signature, 'hex');
-const result       = verifier.verify(publicKeyBuf, signatureBuf);
-
-console.log(result)
-
-
-
-
-
 // First block in the entire blockchain called the genesis block
 let genesis = new Block();
 

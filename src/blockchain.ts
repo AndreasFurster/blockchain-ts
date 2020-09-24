@@ -1,9 +1,9 @@
-import Crypto, {SignPrivateKeyInput} from "crypto"
+import Crypto from "crypto"
 import Block from "./block";
 import IBlock from "./interfaces/IBlock";
 import IBlockChain from "./interfaces/blockchain";
 import ITransaction from "./interfaces/ITransaction";
-import {TextDecoder, TextEncoder} from "util";
+import crypto from "crypto";
 
 export default class BlockChain implements IBlockChain {
   public blocks: IBlock[];
@@ -60,7 +60,10 @@ export default class BlockChain implements IBlockChain {
   }
 
   public verifySignature(hash: string, publicKey: string, signature: string) : boolean {
-    let signatureEncoded = Buffer.from(signature, 'base64');
-    return Crypto.verify(null, Buffer.from(hash), publicKey, signatureEncoded);
+    const verifier = crypto.createVerify('RSA-SHA512');
+    verifier.update('hello');
+    const publicKeyBuf = Buffer.from(publicKey, 'utf-8');
+    const signatureBuf = Buffer.from(signature, 'hex');
+    return verifier.verify(publicKeyBuf, signatureBuf)
   }
 }
