@@ -1,14 +1,13 @@
-import { IMessage } from "../models/message.model";
-import IBlock from "./IBlock";
-import ITransaction from "./ITransaction";
+import IBlock from "./IBlock"
+import ITransaction from "./ITransaction"
 
 export default interface IBlockChain {
-  blocks: IBlock[];
-  difficulty: number;
+  lastBlock?: IBlock
 
-  addBlock(block: IBlock) : void;
-  getPreviousBlock() : IBlock;
-  getNextBlock(message: IMessage[]) : IBlock;
-  generateHash(block: IBlock) : string;
-  verifySignature(hash: string, publicKey: string, signature: string) : boolean;
+  addBlock(block: IBlock) : Promise<IBlock>
+  getBlocks() : Promise<IBlock[]>
+  getPreviousBlock() : IBlock
+  getNextBlock(transaction: ITransaction[]) : IBlock
+  generateHash(block: IBlock) : string
+  verifySignature(hash: string, publicKey: string, signature: string) : boolean
 }

@@ -1,30 +1,39 @@
-import { ObjectId } from 'mongodb';
-import mongoose from 'mongoose';
-import { IMessage } from './message.model';
+import { getModelForClass, prop, Ref } from '@typegoose/typegoose';
+import IBlock from '../interfaces/IBlock';
+import ITransaction from '../interfaces/ITransaction';
 
-export interface IBlock extends mongoose.Document {
-    _id: ObjectId;
-    index: number;
-    hash: string;
-    previousHash: string;
-    nonce: number;
-    messages: IMessage[];
-    key: string;
-    signature: string;
-  };
-  
-  export const BlockSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    index: String,
-    hash: String,
-    previousHash: String,
-    nonce: Number,
-    messages: [{type: mongoose.Schema.Types.ObjectId, ref: 'Message'}],
-    key: String,
-    signature: String,
-  }, {
-      timestamps: true,
-  });
-  
-  const BlockModel = mongoose.model<IBlock>('Block', BlockSchema);
-  export default BlockModel;
+class Block {
+  @prop()
+  public index?: number;
+
+  @prop()
+  public hash?: string;
+
+  @prop()
+  public previousHash?: string;
+
+  @prop()
+  public nonce?: number;
+
+  @prop()
+  public transactions?: ITransaction[];
+
+  @prop()
+  public key?: string;
+
+  @prop()
+  public signature?: string;
+
+};
+
+export const BlockModel = getModelForClass(Block, { schemaOptions: { timestamps: true }});
+
+export const ConvertFromModel = (doc: any ) : IBlock => {
+  let block = new Block
+  block.index = doc.index
+  block.hash = doc.hash
+  block.previousHash = doc.previousHash
+  block.transactions = doc.transactions
+  block.signature = doc.signature
+  return block
+}
