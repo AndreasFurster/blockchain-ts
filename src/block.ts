@@ -19,19 +19,21 @@ export default class Block implements IBlock {
     return "" + JSON.stringify(this.transactions) + this.index + this.previousHash;
   }
 
-  public addMessage(message: ITransaction) : void {
-    console.log(message);
-    this.transactions = [message]
+  public addTransaction(transaction: ITransaction) : void {
+    if(this.transactions === undefined) this.transactions = []
+    
+    this.transactions.push(transaction)
   }
 
-  private createSignature(hash: string) : void {
-    const signer = crypto.createSign('RSA-SHA512');
-    signer.update(hash);
-    this.signature  = signer.sign(config.privateKey, 'hex');
-  }
+  // TODO: Create signature client side & include in hash content?
+  // private createSignature(hash: string) : void {
+  //   const signer = crypto.createSign('RSA-SHA512');
+  //   signer.update(hash);
+  //   this.signature  = signer.sign(config.privateKey, 'hex');
+  // }
 
   public setHash(hash: string) {
     this.hash = hash;
-    this.createSignature(hash);
+    // this.createSignature(hash);
   }
 }

@@ -1,5 +1,11 @@
+interface User {
+  userId: string;
+  name: string;
+  publicKey: string;
+  privateKey: string;
+}
+
 export interface Config
 {
-    publicKey: string;
-    privateKey: string;
+  users: User[]
 }

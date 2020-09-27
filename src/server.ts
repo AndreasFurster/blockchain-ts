@@ -22,8 +22,8 @@ import MessageController from './controllers/messageController';
   let messageController = new MessageController(blockchain)
 
   //Endpoints
-  app.get('/transactions', (req, res) => messageController.getAllMessages(req, res));
-  app.post('/transactions', (req, res) => messageController.createNewMessage(req, res));
+  app.get('/messages', (req, res) => messageController.getAllMessages(req, res));
+  app.post('/messages', (req, res) => messageController.createNewMessage(req, res));
 
   // Run server
   app.listen(env.webPort, () => {

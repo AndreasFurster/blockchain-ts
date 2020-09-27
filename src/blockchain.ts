@@ -60,11 +60,11 @@ export default class BlockChain implements IBlockChain {
     return this.lastBlock
   }
 
-  getNextBlock(messages: ITransaction[]) : IBlock {
+  getNextBlock(transactions: ITransaction[]) : IBlock {
     let block = new Block()
 
-    messages.map((m: ITransaction) => {
-      block.addMessage(m)
+    transactions.map((m: ITransaction) => {
+      block.addTransaction(m)
     })
 
     let previousBlock = this.getPreviousBlock()

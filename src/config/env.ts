@@ -1,5 +1,5 @@
 export const env = {
-    webPort: process.env.PORT || 3000,
+    webPort: process.env.PORT || 3001,
     dbHost: process.env.DB_HOST || 'localhost',
     dbPort: process.env.DB_PORT || '',
     dbUser: process.env.DB_USER || '',
