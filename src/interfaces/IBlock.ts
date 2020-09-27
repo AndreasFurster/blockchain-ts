@@ -1,3 +1,4 @@
+import { IMessage } from "../models/message.model";
 import ITransaction from "./ITransaction";
 
 export default interface IBlock {
@@ -5,7 +6,7 @@ export default interface IBlock {
   hash: string;
   previousHash: string;
   nonce: number;
-  transactions: ITransaction[];
+  messages: IMessage[];
   key: string;
   signature: string;
 }

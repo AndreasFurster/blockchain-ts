@@ -2,6 +2,7 @@ import IBlock from "./interfaces/IBlock";
 import ITransaction from "./interfaces/ITransaction";
 import {Config} from "./config";
 import crypto from "crypto";
+import { IMessage } from "./models/message.model";
 let config: Config = require('../config.json');
 
 export default class Block implements IBlock {
@@ -10,18 +11,19 @@ export default class Block implements IBlock {
     public hash: string = '',
     public previousHash: string = '',
     public nonce: number = 0,
-    public transactions: ITransaction[] = [],
+    public messages: IMessage[] = [],
     public signature: string = ''
   ) {
 
   }
 
   get key() : string {
-    return JSON.stringify(this.transactions) + this.index + this.previousHash + this.nonce;
+    return JSON.stringify(this.messages) + this.index + this.previousHash + this.nonce;
   }
 
-  public addTransaction(transaction: ITransaction) : void {
-    this.transactions = [...this.transactions, transaction]
+  public addMessage(message: IMessage) : void {
+    console.log(message);
+    this.messages = [message]
   }
 
   private createSignature(hash: string) : void {
