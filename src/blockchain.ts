@@ -4,6 +4,7 @@ import IBlock from "./interfaces/IBlock";
 import IBlockChain from "./interfaces/blockchain";
 import ITransaction from "./interfaces/ITransaction";
 import crypto from "crypto";
+import { IMessage } from "./models/message.model";
 
 export default class BlockChain implements IBlockChain {
   public blocks: IBlock[];
@@ -21,11 +22,11 @@ export default class BlockChain implements IBlockChain {
     return this.blocks[this.blocks.length - 1]
   }
 
-  getNextBlock(transactions: ITransaction[]) : IBlock {
+  getNextBlock(messages: IMessage[]) : IBlock {
     let block = new Block()
 
-    transactions.map((t: ITransaction) => {
-      block.addTransaction(t)
+    messages.map((m: IMessage) => {
+      block.addMessage(m)
     })
 
     let previousBlock = this.getPreviousBlock()
