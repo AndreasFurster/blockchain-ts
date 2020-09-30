@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { dbUrl, env } from './config/env';
-import BlockChain from './BlockChain';
+import BlockChain from './blockchain';
 import MessageController from './controllers/messageController';
 
 (async () => {
