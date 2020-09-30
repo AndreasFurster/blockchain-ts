@@ -7,7 +7,7 @@ export default interface IBlockChain {
   addBlock(block: IBlock) : Promise<IBlock>
   getBlocks() : Promise<IBlock[]>
   getPreviousBlock() : IBlock
-  getNextBlock(transaction: ITransaction[]) : IBlock
+  getNextBlock(transaction: ITransaction[], signature: string) : IBlock
   generateHash(block: IBlock) : string
-  verifySignature(hash: string, publicKey: string, signature: string) : boolean
+  verifySignature(message: string, publicKey: string, signature: string) : boolean
 }

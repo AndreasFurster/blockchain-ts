@@ -60,7 +60,7 @@ export default class BlockChain implements IBlockChain {
     return this.lastBlock
   }
 
-  getNextBlock(transactions: ITransaction[]) : IBlock {
+  getNextBlock(transactions: ITransaction[], signature: string) : IBlock {
     let block = new Block()
 
     transactions.map((m: ITransaction) => {
@@ -71,6 +71,7 @@ export default class BlockChain implements IBlockChain {
     block.previousHash = previousBlock.hash;
     if(previousBlock.index === undefined) throw new Error('Index of last block is undefined.')
     block.index = previousBlock.index + 1
+    block.signature = signature;
     block.setHash(this.generateHash(block))
     return block
   }
@@ -88,9 +89,9 @@ export default class BlockChain implements IBlockChain {
     return Crypto.createHash('sha256').update(block.key).digest('hex')
   }
 
-  public verifySignature(hash: string, publicKey: string, signature: string) : boolean {
+  public verifySignature(message: string, publicKey: string, signature: string) : boolean {
     const verifier = crypto.createVerify('RSA-SHA512');
-    verifier.update(hash);
+    verifier.update(message);
     const publicKeyBuf = Buffer.from(publicKey, 'utf-8');
     const signatureBuf = Buffer.from(signature, 'hex');
     return verifier.verify(publicKeyBuf, signatureBuf)

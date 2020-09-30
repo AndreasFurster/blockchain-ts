@@ -28,12 +28,16 @@ export default class MessageController {
           console.log("Could not find user for inserted userId")
           return
         }
-        
-        let message = new Message
-        message.userId = transaction.userId
-        message.message = transaction.message
-        message.from = user.name
-        messages.push(message)
+        if (block.hash && block.previousHash && block.index && block.signature) {
+          let message = new Message
+          message.userId = transaction.userId
+          message.message = transaction.message
+          message.index = block.index
+          message.hash = block.hash
+          message.previousHash = block.previousHash
+          message.signature = block.signature
+          messages.push(message)
+        }
       })
     })
 
@@ -42,16 +46,23 @@ export default class MessageController {
   }
 
   public async createNewMessage(req: express.Request, res: express.Response) {
-    const { userId, message, publicKey, signature } = req.body
+    const { userId, message, signature } = req.body
     let transaction = new Transaction(userId, message)
     console.log(transaction);
-    console.log(config);
     
-    let block = this.blockchain.getNextBlock([transaction])
-    // this.blockchain.verifySignature(block.hash, )
-    let addedBlock = await this.blockchain.addBlock(block)
-
-    res.contentType('application/json');
-    res.status(200).send(addedBlock)
+    let foundUser = config.users.find(user => user.userId === userId);
+    
+    let block = this.blockchain.getNextBlock([transaction], signature)
+    if (foundUser?.publicKey) {
+      let valid = this.blockchain.verifySignature(message, foundUser.publicKey, signature);
+      if (valid) {
+        let addedBlock = await this.blockchain.addBlock(block)
+  
+        res.contentType('application/json');
+        res.status(200).send(addedBlock)
+      } else {
+        res.status(401).send('Not valid')
+      }
+    }  
   }
 }
