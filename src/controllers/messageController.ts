@@ -6,7 +6,7 @@ import IBlock from "../interfaces/IBlock";
 import ITransaction from "../interfaces/ITransaction";
 import Message from "../message";
 import { Config } from "../config";
-let config: Config = require('../../config.json');
+import { config } from '../config/config';
 
 export default class MessageController {
   constructor(private blockchain: IBlockChain) {
@@ -21,7 +21,7 @@ export default class MessageController {
       block.transactions?.map((transactions: any) => {
         // TODO: Strongly typed?
         const transaction = transactions[0]
-        
+
         let user = config.users.find(user => user.userId == transaction.userId)
 
         if(user === undefined) {

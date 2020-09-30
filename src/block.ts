@@ -2,7 +2,7 @@ import IBlock from "./interfaces/IBlock";
 import ITransaction from "./interfaces/ITransaction";
 import {Config} from "./config";
 import crypto from "crypto";
-let config: Config = require('../config.json');
+let config: Config = require('./config/config');
 
 export default class Block implements IBlock {
   constructor(
