@@ -1,12 +1,13 @@
-import IBlock from "./block";
-import ITransaction from "./Transaction";
+import IBlock from "./IBlock"
+import ITransaction from "./ITransaction"
 
 export default interface IBlockChain {
-  blocks: IBlock[];
-  difficulty: number;
+  lastBlock?: IBlock
 
-  addBlock(block: IBlock) : void;
-  getPreviousBlock() : IBlock;
-  getNextBlock(transaction: ITransaction[]) : IBlock;
-  generateHash(block: IBlock) : string;
+  addBlock(block: IBlock) : Promise<IBlock>
+  getBlocks() : Promise<IBlock[]>
+  getPreviousBlock() : IBlock
+  getNextBlock(transaction: ITransaction[], signature: string) : IBlock
+  generateHash(block: IBlock) : string
+  verifySignature(message: string, publicKey: string, signature: string) : boolean
 }

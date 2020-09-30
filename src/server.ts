@@ -1,31 +1,35 @@
-const http = require('http');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const mongodb = require('./config/mongo.db');
-const env = require('./config/env');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import { dbUrl, env } from './config/env';
+import BlockChain from './BlockChain';
+import MessageController from './controllers/messageController';
 
-const transactions_routes = require('./api/transactions.routes');
+(async () => {
+  const mongodb = require('./config/mongo.db');
 
-// initialize express
-const app = express();
-module.exports = {};
+  // initialize express
+  const app = express();
+  module.exports = {};
 
-// CORS headers
-app.use(cors());
+  // CORS headers
+  app.use(cors());
 
-// bodyParser
-app.use(bodyParser.json());
+  // bodyParser
+  app.use(bodyParser.json());
 
-//Endpoints
-app.get('/', (res: { send: (arg0: string) => void; }) => {
-    res.send('Hello BlockChain')
+  let blockchain = await BlockChain.load();  
+  let messageController = new MessageController(blockchain)
+
+  //Endpoints
+  app.get('/messages', (req, res) => messageController.getAllMessages(req, res));
+  app.post('/messages', (req, res) => messageController.createNewMessage(req, res));
+
+  // Run server
+  app.listen(env.webPort, () => {
+    console.log('Listening on http://localhost:' + env.webPort)
+
   });
-app.use('/api/v1', transactions_routes);
 
-// Run server
-app.listen(env.env.webPort, function () {
-  console.log('Served on port ' + env.env.webPort)
-});
-
-module.exports = app;
+  module.exports = app;
+})()

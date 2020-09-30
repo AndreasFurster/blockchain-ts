@@ -1,61 +1,99 @@
 import Crypto from "crypto"
 import Block from "./block";
-import IBlock from "./interfaces/block";
+import IBlock from "./interfaces/IBlock";
 import IBlockChain from "./interfaces/blockchain";
-import ITransaction from "./interfaces/Transaction";
+import ITransaction from "./interfaces/ITransaction";
+import crypto from "crypto";
+// import { TransactionSchema } from "./models/transaction.model";
+// import BlockChainModel from "./models/blockchain.model";
+import { BlockModel, ConvertFromModel } from "./models/block.model";
 
 export default class BlockChain implements IBlockChain {
-  public blocks: IBlock[];
 
-  constructor(
-    genesisBlock: IBlock,
-    public difficulty: number = 4) {
+  public lastBlock?: IBlock;
+
+  constructor() {
+
+  }
+
+  static async load() : Promise<BlockChain> {
+    // Get amount of existing blocks from database
+    let existingBlockCount = await BlockModel.countDocuments({})
+
+    // If no blocks in db; Create a new blockchain with genesis block 
+    if(existingBlockCount === 0) {
+      console.log('No blocks found. Creating new blockchain with genesis block...');
+      
+      let blockchain = new BlockChain();
+      
+      let genesis = new Block();
+      genesis.index = 0
+      genesis.hash = blockchain.generateHash(genesis)
+      
+      blockchain.addBlock(genesis)
+      return blockchain;
+    }
+
+    // If some blocks are found; initialize blockchain and load last blocks in memory
+    console.log(`${existingBlockCount} blocks found. Loading last block into blockchain...`);
     
-    this.blocks = [];
-    genesisBlock.hash = this.generateHash(genesisBlock)
-    this.addBlock(genesisBlock);
+    let blockchain = new BlockChain()
+    
+    let lastBlockDocument = await BlockModel.findOne().sort({ createdAt: 1})
+    if(lastBlockDocument === null) throw new Error('Could not get first document from database');
+    
+    blockchain.lastBlock = ConvertFromModel(lastBlockDocument)
+
+    return blockchain
+  }
+
+  async getBlocks() : Promise<IBlock[]> {
+    let blockDocs = await BlockModel.find()
+    return blockDocs.map(ConvertFromModel)
   }
 
   getPreviousBlock() : IBlock {
-    return this.blocks[this.blocks.length - 1]
+    if(this.lastBlock === undefined) {
+      throw new Error("Last block not set.");
+    }
+
+    return this.lastBlock
   }
 
-  getNextBlock(transactions: ITransaction[]) : IBlock {
+  getNextBlock(transactions: ITransaction[], signature: string) : IBlock {
     let block = new Block()
 
-    transactions.map((t: ITransaction) => {
-      block.addTransaction(t)
+    transactions.map((m: ITransaction) => {
+      block.addTransaction(m)
     })
 
     let previousBlock = this.getPreviousBlock()
-    block.previousHash = previousBlock.hash
-
-    block.index = this.blocks.length
-    block.hash = this.generateHash(block)
-
+    block.previousHash = previousBlock.hash;
+    if(previousBlock.index === undefined) throw new Error('Index of last block is undefined.')
+    block.index = previousBlock.index + 1
+    block.signature = signature;
+    block.setHash(this.generateHash(block))
     return block
   }
 
-  public addBlock(block: IBlock) : void {
-    this.blocks = [...this.blocks, block]
+  public async addBlock(block: IBlock) : Promise<IBlock> {
+    let blockDoc = await BlockModel.create(block)
+    let insertedBlock = ConvertFromModel(blockDoc)
+    this.lastBlock = insertedBlock
+    return insertedBlock
   }
 
   public generateHash(block: IBlock) {
-    // The hash is required to start with a couple of 0's. This makes the hash hard to generate. 
-    let requiredHashStart = Array(this.difficulty + 1).join("0");
+    if(!block.key) throw new Error("Key of block is undefined.");
+    
+    return Crypto.createHash('sha256').update(block.key).digest('hex')
+  }
 
-    let hash: string;
-    do {
-      // Increase nonce. The nonce is part of the block's key. This way the input of the hash function is unique each time a hash is created. 
-      // The nonce is also stored in the block so one can validate the hash. 
-      block.nonce += 1;
-
-      // Generate new hash
-      hash = Crypto.createHash('sha256').update(block.key).digest('hex')
-
-      // Validate valid hash
-    } while(!hash.startsWith(requiredHashStart))
-
-    return hash;
+  public verifySignature(message: string, publicKey: string, signature: string) : boolean {
+    const verifier = crypto.createVerify('RSA-SHA512');
+    verifier.update(message);
+    const publicKeyBuf = Buffer.from(publicKey, 'utf-8');
+    const signatureBuf = Buffer.from(signature, 'hex');
+    return verifier.verify(publicKeyBuf, signatureBuf)
   }
 }

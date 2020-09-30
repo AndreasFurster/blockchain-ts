@@ -1,10 +1,9 @@
-import ITransaction from "./interfaces/Transaction";
+import ITransaction from "./interfaces/ITransaction";
 
 export default class Transaction implements ITransaction {
   constructor(
-    public from: string,
-    public to: string,
-    public amount: number,
+    public userId: string,
+    public message: string,
   ) {
 
   }
