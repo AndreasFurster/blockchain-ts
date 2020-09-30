@@ -1,5 +1,4 @@
 export default interface ITransaction {
-  from: string;
-  to: string;
-  amount: number;
+  userId: string;
+  message: string;
 }
