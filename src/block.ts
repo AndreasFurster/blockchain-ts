@@ -16,7 +16,7 @@ export default class Block implements IBlock {
   }
 
   get key() : string {
-    return "" + JSON.stringify(this.transactions) + this.index + this.previousHash;
+    return "" + JSON.stringify(this.transactions) + this.index + this.previousHash + this.signature;
   }
 
   public addTransaction(transaction: ITransaction) : void {

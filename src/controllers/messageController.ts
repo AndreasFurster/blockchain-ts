@@ -42,11 +42,13 @@ export default class MessageController {
   }
 
   public async createNewMessage(req: express.Request, res: express.Response) {
-    const { userId, message, signature } = req.body
+    const { userId, message, publicKey, signature } = req.body
     let transaction = new Transaction(userId, message)
     console.log(transaction);
+    console.log(config);
     
     let block = this.blockchain.getNextBlock([transaction])
+    // this.blockchain.verifySignature(block.hash, )
     let addedBlock = await this.blockchain.addBlock(block)
 
     res.contentType('application/json');
