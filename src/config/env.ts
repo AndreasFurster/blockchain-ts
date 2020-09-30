@@ -7,4 +7,4 @@ export const env = {
     dbDatabase: process.env.DB_DATABASE || 'Blocks'
 };
 
-export const dbUrl = 'mongodb://localhost:27017/blockchain-ts';
+export const dbUrl = process.env.MONGO_URI || 'mongodb://localhost:27017/blockchain-ts';
