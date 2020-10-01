@@ -5,8 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "start:": "nodemon",
-    "build": "rimraf ./build && tsc",
-    "start:prod": "npm run build && node build/src/server.js"
+    // "build": "rimraf ./build && tsc",
+    // "start:prod": "npm run build && node build/src/server.js"
   },
   "keywords": [],
   "author": "",
