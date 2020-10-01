@@ -6,11 +6,11 @@ export const config = {
     },
     {
       "userId": "ruben",
-      "publicKey": "-----BEGIN PUBLIC KEY-----\nMFswDQYJKoZIhvcNAQEBBQADSgAwRwJAVrBAuOFv9zyxPgGxhD1lMQ7VHHXd/q1D\nFPbvZt3wZQLArdJrW8hyx+5//qp6YZ8R/hsy/tuOQWL0HxZrD3Vj0QIDAQAB\n-----END PUBLIC KEY-----"
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCZX/myUDBo29XbvBwYxbt7H9c1\nPg6TgS60eg/9dpZJoStP5QaptOcyw6LvGCW48smR2lwgkrqmqettDSPk9pY3+OCE\nWGxfsHm+lvX0Y8k3lSD41/ALvRWye4PM/hQX/C0AUE5KasIy2jEEqhkd7lXGPjRT\nHf9DCuQUF8oAYgFEnQIDAQAB\n-----END PUBLIC KEY-----"
     },
     {
       "userId": "andreas",
-      "publicKey": "-----BEGIN PUBLIC KEY-----\nMFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAJjcCzToD+xPP/vx1z4g1PgWtrjLbFsF\nbACXX9DAPz8VKyarVsauN7lKRYmoKhW2R47VTAKpwxJo+idxVZ+2Zs8CAwEAAQ==\n-----END PUBLIC KEY-----"
+      "publicKey": "-----BEGIN PUBLIC KEY-----\nMIGeMA0GCSqGSIb3DQEBAQUAA4GMADCBiAKBgHmA6aBJO47Lr6Z1D/aGMRu0Pjco\nLrO8oUIOU7XiCBh5NJK9EfOlmny1/7+i3ri6rWgAOjxqUXGT1WnWJYK8XdTPyjIb\nSb3f0qz/CD71U01rG7kt4AeSzpp68ZXhlh0tXj9a1L5o9YIPHByPaUdHbEKbSdi7\nj5CTAc0Ck6EEMfB9AgMBAAE=\n-----END PUBLIC KEY-----"
     }
   ]
 }
