@@ -12,8 +12,22 @@ import MessageController from './controllers/messageController';
   const app = express();
   module.exports = {};
 
+  const options: cors.CorsOptions = {
+    allowedHeaders: [
+      'Origin',
+      'X-Requested-With',
+      'Content-Type',
+      'Accept',
+      'X-Access-Token',
+    ],
+    credentials: true,
+    methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+    origin: 'https://blockchain.andreasfurster.nl',
+    preflightContinue: false,
+  };
+
   // CORS headers
-  app.use(cors());
+  app.use(cors(options));
 
   // bodyParser
   app.use(bodyParser.json());
