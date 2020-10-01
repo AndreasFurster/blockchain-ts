@@ -2,11 +2,11 @@
   "name": "blockchain-ts",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "server.ts",
   "scripts": {
-    "start:dev": "nodemon",
+    "start:": "nodemon",
     "build": "rimraf ./build && tsc",
-    "start": "npm run build && node build/src/server.js"
+    "start:prod": "npm run build && node build/src/server.js"
   },
   "keywords": [],
   "author": "",
