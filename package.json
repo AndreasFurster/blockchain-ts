@@ -4,9 +4,9 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "ts-node ./src/server.ts",
+    "start:dev": "ts-node ./src/server.ts",
     "build": "rimraf ./build && tsc",
-    "start:prod": "npm run build && node build/server.js"
+    "start": "npm run build && node build/server.js"
   },
   "keywords": [],
   "author": "",
